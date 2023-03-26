@@ -1,14 +1,57 @@
-// import { Statistics } from './Statistics/Statistics';
-// import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
-// import { Section } from './Section/Section';
-// import { Notification } from './Notification/Notification';
-
+import { AddContact } from './AddContact/AddContact';
+import { ContactsList } from './ContactsList/ContactsList';
+import { Filter } from './Filter/Filter';
+import contacts from '../Data/contacts';
 import React, { Component } from 'react';
-
+import { nanoid } from 'nanoid';
 export class App extends Component {
-  state = {};
+  state = {
+    contacts,
+    filter: '',
+  };
+
+  DataHandleSubmit = data => this.AddContactMarckup(data);
+
+  AddContactMarckup = ({ name, number }) => {
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+    this.setState(prevState => ({
+      contacts: [newContact, ...prevState.contacts],
+    }));
+  };
+
+  onFilterChange = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
+  visibleContacts = () => {
+    const lowCaseFilter = this.state.filter.toLowerCase();
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(lowCaseFilter)
+    );
+  };
+
+  onClickDelBtn = currentID => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== currentID),
+    }));
+  };
 
   render() {
-    return <div>!!!!</div>;
+    return (
+      <div>
+        <h1>Phonebook</h1>
+        <AddContact onSubmit={this.DataHandleSubmit} />
+        <h2>Contacts</h2>
+        <Filter value={this.state.filter} onFilter={this.onFilterChange} />
+        <ContactsList
+          onClickDelBtn={this.onClickDelBtn}
+          contacts={this.visibleContacts()}
+        />
+      </div>
+    );
   }
 }
