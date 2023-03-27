@@ -20,5 +20,8 @@ export const ContactsList = ({ contacts, onClickDelBtn }) => {
 };
 
 ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  onClickDelBtn: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.string.isRequired).isRequired
+  ).isRequired,
 };

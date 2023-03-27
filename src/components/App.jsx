@@ -18,9 +18,15 @@ export class App extends Component {
       name,
       number,
     };
-    this.setState(prevState => ({
-      contacts: [newContact, ...prevState.contacts],
-    }));
+    console.log(this.state.contacts);
+    console.log(newContact);
+    this.state.contacts.find(
+      ({ name }) => name.toLowerCase() === newContact.name.toLowerCase()
+    )
+      ? alert('Этот чувак уже есть в книге бро')
+      : this.setState(prevState => ({
+          contacts: [newContact, ...prevState.contacts],
+        }));
   };
 
   onFilterChange = e => {
